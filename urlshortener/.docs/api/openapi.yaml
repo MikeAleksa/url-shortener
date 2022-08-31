@@ -1,0 +1,239 @@
+openapi: 3.0.0
+info:
+  description: An API for shortening URLs
+  title: URL Shortener OpenApi
+  version: 1.0.0
+servers:
+- url: http://localhost:5000
+paths:
+  /api/v1/create:
+    post:
+      description: Take a long URL and shorten it into a new short URL.
+      operationId: createShortUrl
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateShortURLRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShortURLResponse'
+          description: Successful operation
+        "422":
+          content:
+            application/json:
+              example:
+                errors:
+                - Invalid URL
+                - Alias field is too long
+              schema:
+                $ref: '#/components/schemas/GenericResponse'
+          description: "Validation failed on one of the properties, please check the\
+            \ errors in the response body."
+        "5XX":
+          content:
+            application/json:
+              example:
+                errors:
+                - Something went wrong
+              schema:
+                $ref: '#/components/schemas/GenericResponse'
+          description: There was an unexpected error processing your request
+      summary: Create a new shortened URL
+  /api/v1/retrieve:
+    get:
+      description: Receive a long URL from a short URL
+      operationId: getLongUrl
+      parameters:
+      - description: A shortened URL that references a long URL
+        example: https://www.my-domain.com/shorturl
+        explode: true
+        in: query
+        name: shortUrl
+        required: true
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LongURLResponse'
+          description: Successful operation
+        "422":
+          content:
+            application/json:
+              example:
+                errors:
+                - Invalid URL
+                - Alias field is too long
+              schema:
+                $ref: '#/components/schemas/GenericResponse'
+          description: "Validation failed on one of the properties, please check the\
+            \ errors in the response body."
+        "5XX":
+          content:
+            application/json:
+              example:
+                errors:
+                - Something went wrong
+              schema:
+                $ref: '#/components/schemas/GenericResponse'
+          description: There was an unexpected error processing your request
+      summary: Get a long URL
+  /api/v1/analytics:
+    get:
+      description: Get analytics for a short URL
+      operationId: getAnalytics
+      parameters:
+      - description: A shortened URL that references a long URL
+        example: https://www.my-domain.com/shorturl
+        explode: true
+        in: query
+        name: shortUrl
+        required: true
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnalyticsResponse'
+          description: Successful operation
+        "422":
+          content:
+            application/json:
+              example:
+                errors:
+                - Invalid URL
+                - Alias field is too long
+              schema:
+                $ref: '#/components/schemas/GenericResponse'
+          description: "Validation failed on one of the properties, please check the\
+            \ errors in the response body."
+        "5XX":
+          content:
+            application/json:
+              example:
+                errors:
+                - Something went wrong
+              schema:
+                $ref: '#/components/schemas/GenericResponse'
+          description: There was an unexpected error processing your request
+      summary: Get analytics
+components:
+  parameters:
+    ShortURLParam:
+      description: A shortened URL that references a long URL
+      example: https://www.my-domain.com/shorturl
+      explode: true
+      in: query
+      name: shortUrl
+      required: true
+      schema:
+        type: string
+      style: form
+  responses:
+    NotFound:
+      description: This resource could not be found 404
+    UnprocessableEntity:
+      content:
+        application/json:
+          example:
+            errors:
+            - Invalid URL
+            - Alias field is too long
+          schema:
+            $ref: '#/components/schemas/GenericResponse'
+      description: "Validation failed on one of the properties, please check the errors\
+        \ in the response body."
+    UnexpectedError:
+      content:
+        application/json:
+          example:
+            errors:
+            - Something went wrong
+          schema:
+            $ref: '#/components/schemas/GenericResponse'
+      description: There was an unexpected error processing your request
+  schemas:
+    GenericResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/GenericResponse_data'
+      title: Generic API response
+      type: object
+    LongURLData:
+      properties:
+        longUrl:
+          description: The long URL that will be shortened
+          example: https://www.example.com/my-really-long-link-that-I-need-to-shorten/84378949
+          type: string
+      title: Long URL data
+      type: object
+    ShortURLData:
+      properties:
+        longUrl:
+          description: The shortened URL
+          example: https://www.example.com/my-really-long-link-that-I-need-to-shorten/84378949
+          type: string
+      title: Short URL data
+      type: object
+    AnalyticsData:
+      properties:
+        redirects:
+          description: Click analytics for shortened URL
+          example: 1000
+          type: integer
+      title: Analytics data
+      type: object
+    CreateShortURLRequest:
+      properties:
+        url:
+          description: The long URL that will be shortened
+          example: https://www.example.com/my-really-long-link-that-I-need-to-shorten/84378949
+          type: string
+      required:
+      - url
+      title: Create Short URL Request
+      type: object
+    ShortURLResponse:
+      allOf:
+      - $ref: '#/components/schemas/ShortURLResponse_allOf'
+      title: Short URL response
+    LongURLResponse:
+      allOf:
+      - $ref: '#/components/schemas/LongURLResponse_allOf'
+      title: Long URL response
+    AnalyticsResponse:
+      allOf:
+      - $ref: '#/components/schemas/AnalyticsResponse_allOf'
+      title: Analytics response
+    GenericResponse_data:
+      description: Response data
+      nullable: true
+      oneOf:
+      - type: object
+      - type: string
+    ShortURLResponse_allOf:
+      properties:
+        data:
+          $ref: '#/components/schemas/ShortURLData'
+      type: object
+    LongURLResponse_allOf:
+      properties:
+        data:
+          $ref: '#/components/schemas/LongURLData'
+      type: object
+    AnalyticsResponse_allOf:
+      properties:
+        data:
+          $ref: '#/components/schemas/AnalyticsData'
+      type: object
