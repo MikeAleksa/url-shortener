@@ -12,6 +12,7 @@ services:
       - .env
     ports:
       - "8000:5000"
+    restart: unless-stopped
 
   db:
     container_name: composepostgres
