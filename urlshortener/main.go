@@ -31,6 +31,9 @@ func main() {
 	// GetLongUrl - Get a long URL
 	e.GET("/api/v1/retrieve", c.GetLongUrl)
 
+	// RedirectToUrl - redirect a short URL to the long URL
+	e.GET("/:url", c.RedirectToUrl)
+
 	// Start server
 	e.Logger.Debug("Starting listening on port 5000!")
 	e.Logger.Fatal(e.Start(":5000"))

@@ -45,15 +45,19 @@ func CloseDB() {
 
 func CreateUrl(urlData models.UrlData) error {
 	var err error
+
+	// check if short URL already exists
+	_, err = GetUrl(urlData.ShortUrl)
+	if err == nil {
+		// short URL already exists in database - do nothing
+		return nil
+	}
+
 	queryStatement := `
 	INSERT INTO url (shorturl, longurl, redirects) VALUES ($1, $2, $3);
 	`
 	_, err = DB.ExecContext(db_context, queryStatement, urlData.ShortUrl, urlData.LongUrl, 0)
 	if err != nil {
-		// if the shorturl already exists, return like normal
-		if err.Error() == "pq: duplicate key value violates unique constraint \"url_pkey\"" {
-			return nil
-		}
 		return err
 	}
 	return nil
@@ -70,6 +74,17 @@ func GetUrl(shortUrl string) (models.UrlData, error) {
 	if err != nil {
 		return models.UrlData{}, err
 	}
-
 	return urlData, nil
+}
+
+func IncrementRedirectCount(shortUrl string) error {
+	var err error
+	queryStatement := `
+	UPDATE url SET redirects = redirects + 1 WHERE shorturl = $1;
+	`
+	_, err = DB.ExecContext(db_context, queryStatement, shortUrl)
+	if err != nil {
+		return err
+	}
+	return nil
 }

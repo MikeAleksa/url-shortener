@@ -70,3 +70,22 @@ func (c *Container) GetLongUrl(ctx echo.Context) error {
 		Url: urlData.LongUrl,
 	})
 }
+
+// RedirectToUrl - Redirect a short URL to a long URL
+func (c *Container) RedirectToUrl(ctx echo.Context) error {
+	shortUrl := ctx.Param("url")
+
+	urlData, err := database.GetUrl(shortUrl)
+	if err != nil {
+		ctx.Logger().Error(err)
+		return ctx.JSON(http.StatusNotFound, "URL not found")
+	}
+
+	err = database.IncrementRedirectCount(shortUrl)
+	if err != nil {
+		ctx.Logger().Error(err)
+	}
+
+	longUrl := urlData.LongUrl
+	return ctx.Redirect(http.StatusMovedPermanently, longUrl)
+}
