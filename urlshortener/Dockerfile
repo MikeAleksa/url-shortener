@@ -3,7 +3,6 @@ RUN apk add --no-cache git gcc
 RUN mkdir /app
 WORKDIR /app
 COPY . .
-RUN go mod download
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o api
 FROM alpine:3.13
 COPY --from=build-env /app/api .

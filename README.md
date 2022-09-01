@@ -5,7 +5,7 @@ A URL shortener using Go and PostgreSQL
 ## Requirements
 
 - Docker (tested with version 20.10.16)
-- Go (for development, tested with version 1.16.2)
+- Go (for development, tested with version 1.16)
   ...
 
 ## Quick-Start
@@ -13,6 +13,7 @@ A URL shortener using Go and PostgreSQL
 Start services:
 
 ```sh
+docker-compose build
 docker-compose up -d
 ```
 
@@ -42,8 +43,9 @@ docker run --rm \
 - IaC - terraform for deployment on AWS or K8s
 - CI/CD - pipeline for redeploying on updates, minified dockerfile with prebuilt binary (and without Docker-in-Docker) saved as artifact and deployed
 - Postman Integration Tests
-- Remove .env (for demonstration purposes)
 
 - Unit Test
-- Swagger
-- OpenAPI generator
+  - Swagger
+  - OpenAPI generator
+- additional logging and error messages for bad queries (e.g. validation errors)
+- security hardening (remove .env thats there for demonstration purposes)

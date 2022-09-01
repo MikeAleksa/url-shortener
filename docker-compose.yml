@@ -12,12 +12,16 @@ services:
       - .env
     ports:
       - "8000:5000"
+    depends_on:
+      - db
 
   db:
+    container_name: composepostgres
     image: postgres:latest
     restart: unless-stopped
     volumes:
       - postgres-data:/var/lib/postgresql/data
+      - ./url_table.sql:/docker-entrypoint-initdb.d/url_table.sql
     env_file:
       - .env
     ports:

@@ -21,19 +21,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ShortURLResponse'
+                $ref: '#/components/schemas/ShortURLData'
           description: Successful operation
-        "422":
-          content:
-            application/json:
-              example:
-                errors:
-                - Invalid URL
-                - Alias field is too long
-              schema:
-                $ref: '#/components/schemas/GenericResponse'
-          description: "Validation failed on one of the properties, please check the\
-            \ errors in the response body."
         "5XX":
           content:
             application/json:
@@ -63,19 +52,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/LongURLResponse'
+                $ref: '#/components/schemas/LongURLData'
           description: Successful operation
-        "422":
-          content:
-            application/json:
-              example:
-                errors:
-                - Invalid URL
-                - Alias field is too long
-              schema:
-                $ref: '#/components/schemas/GenericResponse'
-          description: "Validation failed on one of the properties, please check the\
-            \ errors in the response body."
+        "404":
+          description: This resource could not be found 404
         "5XX":
           content:
             application/json:
@@ -105,19 +85,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AnalyticsResponse'
+                $ref: '#/components/schemas/AnalyticsData'
           description: Successful operation
-        "422":
-          content:
-            application/json:
-              example:
-                errors:
-                - Invalid URL
-                - Alias field is too long
-              schema:
-                $ref: '#/components/schemas/GenericResponse'
-          description: "Validation failed on one of the properties, please check the\
-            \ errors in the response body."
+        "404":
+          description: This resource could not be found 404
         "5XX":
           content:
             application/json:
@@ -143,17 +114,6 @@ components:
   responses:
     NotFound:
       description: This resource could not be found 404
-    UnprocessableEntity:
-      content:
-        application/json:
-          example:
-            errors:
-            - Invalid URL
-            - Alias field is too long
-          schema:
-            $ref: '#/components/schemas/GenericResponse'
-      description: "Validation failed on one of the properties, please check the errors\
-        \ in the response body."
     UnexpectedError:
       content:
         application/json:
@@ -171,28 +131,50 @@ components:
       title: Generic API response
       type: object
     LongURLData:
+      example:
+        url: https://www.example.com/my-really-long-link-that-I-need-to-shorten/84378949
       properties:
-        longUrl:
+        url:
           description: The long URL that will be shortened
           example: https://www.example.com/my-really-long-link-that-I-need-to-shorten/84378949
           type: string
       title: Long URL data
       type: object
     ShortURLData:
+      example:
+        url: "84378949"
       properties:
-        longUrl:
+        url:
           description: The shortened URL
-          example: https://www.example.com/my-really-long-link-that-I-need-to-shorten/84378949
+          example: "84378949"
           type: string
       title: Short URL data
       type: object
     AnalyticsData:
+      example:
+        redirects: 1000
       properties:
         redirects:
           description: Click analytics for shortened URL
           example: 1000
           type: integer
       title: Analytics data
+      type: object
+    URLData:
+      properties:
+        longUrl:
+          description: The long URL that will be shortened
+          example: https://www.example.com/my-really-long-link-that-I-need-to-shorten/84378949
+          type: string
+        shortUrl:
+          description: The shortened URL
+          example: "84378949"
+          type: string
+        redirects:
+          description: Click analytics for shortened URL
+          example: 1000
+          type: integer
+      title: Complete URL data
       type: object
     CreateShortURLRequest:
       properties:
@@ -204,36 +186,9 @@ components:
       - url
       title: Create Short URL Request
       type: object
-    ShortURLResponse:
-      allOf:
-      - $ref: '#/components/schemas/ShortURLResponse_allOf'
-      title: Short URL response
-    LongURLResponse:
-      allOf:
-      - $ref: '#/components/schemas/LongURLResponse_allOf'
-      title: Long URL response
-    AnalyticsResponse:
-      allOf:
-      - $ref: '#/components/schemas/AnalyticsResponse_allOf'
-      title: Analytics response
     GenericResponse_data:
       description: Response data
       nullable: true
       oneOf:
       - type: object
       - type: string
-    ShortURLResponse_allOf:
-      properties:
-        data:
-          $ref: '#/components/schemas/ShortURLData'
-      type: object
-    LongURLResponse_allOf:
-      properties:
-        data:
-          $ref: '#/components/schemas/LongURLData'
-      type: object
-    AnalyticsResponse_allOf:
-      properties:
-        data:
-          $ref: '#/components/schemas/AnalyticsData'
-      type: object

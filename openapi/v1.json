@@ -32,13 +32,10 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ShortURLResponse"
+                  "$ref": "#/components/schemas/ShortURLData"
                 }
               }
             }
-          },
-          "422": {
-            "$ref": "#/components/responses/UnprocessableEntity"
           },
           "5XX": {
             "$ref": "#/components/responses/UnexpectedError"
@@ -62,13 +59,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/LongURLResponse"
+                  "$ref": "#/components/schemas/LongURLData"
                 }
               }
             }
           },
-          "422": {
-            "$ref": "#/components/responses/UnprocessableEntity"
+          "404": {
+            "$ref": "#/components/responses/NotFound"
           },
           "5XX": {
             "$ref": "#/components/responses/UnexpectedError"
@@ -92,13 +89,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AnalyticsResponse"
+                  "$ref": "#/components/schemas/AnalyticsData"
                 }
               }
             }
           },
-          "422": {
-            "$ref": "#/components/responses/UnprocessableEntity"
+          "404": {
+            "$ref": "#/components/responses/NotFound"
           },
           "5XX": {
             "$ref": "#/components/responses/UnexpectedError"
@@ -142,7 +139,7 @@
       "LongURLData": {
         "title": "Long URL data",
         "properties": {
-          "longUrl": {
+          "url": {
             "description": "The long URL that will be shortened",
             "type": "string",
             "example": "https://www.example.com/my-really-long-link-that-I-need-to-shorten/84378949"
@@ -153,10 +150,10 @@
       "ShortURLData": {
         "title": "Short URL data",
         "properties": {
-          "longUrl": {
+          "url": {
             "description": "The shortened URL",
             "type": "string",
-            "example": "https://www.example.com/my-really-long-link-that-I-need-to-shorten/84378949"
+            "example": "84378949"
           }
         },
         "type": "object"
@@ -164,6 +161,27 @@
       "AnalyticsData": {
         "title": "Analytics data",
         "properties": {
+          "redirects": {
+            "description": "Click analytics for shortened URL",
+            "type": "integer",
+            "example": 1000
+          }
+        },
+        "type": "object"
+      },
+      "URLData": {
+        "title": "Complete URL data",
+        "properties": {
+          "longUrl": {
+            "description": "The long URL that will be shortened",
+            "type": "string",
+            "example": "https://www.example.com/my-really-long-link-that-I-need-to-shorten/84378949"
+          },
+          "shortUrl": {
+            "description": "The shortened URL",
+            "type": "string",
+            "example": "84378949"
+          },
           "redirects": {
             "description": "Click analytics for shortened URL",
             "type": "integer",
@@ -183,63 +201,11 @@
           }
         },
         "type": "object"
-      },
-      "ShortURLResponse": {
-        "title": "Short URL response",
-        "allOf": [
-          {
-            "properties": {
-              "data": {
-                "$ref": "#/components/schemas/ShortURLData"
-              }
-            },
-            "type": "object"
-          }
-        ]
-      },
-      "LongURLResponse": {
-        "title": "Long URL response",
-        "allOf": [
-          {
-            "properties": {
-              "data": {
-                "$ref": "#/components/schemas/LongURLData"
-              }
-            },
-            "type": "object"
-          }
-        ]
-      },
-      "AnalyticsResponse": {
-        "title": "Analytics response",
-        "allOf": [
-          {
-            "properties": {
-              "data": {
-                "$ref": "#/components/schemas/AnalyticsData"
-              }
-            },
-            "type": "object"
-          }
-        ]
       }
     },
     "responses": {
       "NotFound": {
         "description": "This resource could not be found 404"
-      },
-      "UnprocessableEntity": {
-        "description": "Validation failed on one of the properties, please check the errors in the response body.",
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/GenericResponse"
-            },
-            "example": {
-              "errors": ["Invalid URL", "Alias field is too long"]
-            }
-          }
-        }
       },
       "UnexpectedError": {
         "description": "There was an unexpected error processing your request",
