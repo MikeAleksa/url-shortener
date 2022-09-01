@@ -11,6 +11,30 @@
     }
   ],
   "paths": {
+    "/:url": {
+      "get": {
+        "summary": "Redirect a short URL to its original URL",
+        "parameters": [
+          {
+            "name": "url",
+            "in": "path",
+            "description": "The short URL to redirect to its original URL",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "301": {
+            "description": "Redirect to the original URL"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
     "/api/v1/create": {
       "post": {
         "summary": "Create a new shortened URL",

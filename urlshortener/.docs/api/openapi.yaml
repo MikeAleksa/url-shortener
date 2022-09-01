@@ -6,6 +6,23 @@ info:
 servers:
 - url: http://localhost:5000
 paths:
+  /:url:
+    get:
+      parameters:
+      - description: The short URL to redirect to its original URL
+        explode: false
+        in: path
+        name: url
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "301":
+          description: Redirect to the original URL
+        "404":
+          description: This resource could not be found 404
+      summary: Redirect a short URL to its original URL
   /api/v1/create:
     post:
       description: Take a long URL and shorten it into a new short URL.
