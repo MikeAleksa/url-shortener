@@ -56,7 +56,7 @@ paths:
       operationId: getLongUrl
       parameters:
       - description: A shortened URL that references a long URL
-        example: https://www.my-domain.com/shorturl
+        example: 5MaqJH
         explode: true
         in: query
         name: shortUrl
@@ -89,7 +89,7 @@ paths:
       operationId: getAnalytics
       parameters:
       - description: A shortened URL that references a long URL
-        example: https://www.my-domain.com/shorturl
+        example: 5MaqJH
         explode: true
         in: query
         name: shortUrl
@@ -120,7 +120,7 @@ components:
   parameters:
     ShortURLParam:
       description: A shortened URL that references a long URL
-      example: https://www.my-domain.com/shorturl
+      example: 5MaqJH
       explode: true
       in: query
       name: shortUrl
@@ -159,11 +159,11 @@ components:
       type: object
     ShortURLData:
       example:
-        url: "84378949"
+        url: 5MaqJH
       properties:
         url:
           description: The shortened URL
-          example: "84378949"
+          example: 5MaqJH
           type: string
       title: Short URL data
       type: object

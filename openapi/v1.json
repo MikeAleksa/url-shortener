@@ -138,7 +138,7 @@
         "schema": {
           "type": "string"
         },
-        "example": "https://www.my-domain.com/shorturl"
+        "example": "5MaqJH"
       }
     },
     "schemas": {
@@ -177,7 +177,7 @@
           "url": {
             "description": "The shortened URL",
             "type": "string",
-            "example": "84378949"
+            "example": "5MaqJH"
           }
         },
         "type": "object"
