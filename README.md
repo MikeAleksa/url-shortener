@@ -41,8 +41,6 @@ docker run --rm \
 
 If time allowed, I would also implement the following:
 
-- Fix Swagger error that doesn't allow web UI to make API calls due to OPTIONS method (cURL and Postman both work for making API calls)
-
 - Validation
 
   - check that a long url is a valid url format before processing

@@ -21,7 +21,8 @@
             "description": "The short URL to redirect to its original URL",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "example": "5MaqJH"
             }
           }
         ],
@@ -131,7 +132,7 @@
   "components": {
     "parameters": {
       "ShortURLParam": {
-        "name": "shortUrl",
+        "name": "url",
         "in": "query",
         "description": "A shortened URL that references a long URL",
         "required": true,

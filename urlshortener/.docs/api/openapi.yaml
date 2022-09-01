@@ -15,6 +15,7 @@ paths:
         name: url
         required: true
         schema:
+          example: 5MaqJH
           type: string
         style: simple
       responses:
@@ -59,7 +60,7 @@ paths:
         example: 5MaqJH
         explode: true
         in: query
-        name: shortUrl
+        name: url
         required: true
         schema:
           type: string
@@ -92,7 +93,7 @@ paths:
         example: 5MaqJH
         explode: true
         in: query
-        name: shortUrl
+        name: url
         required: true
         schema:
           type: string
@@ -123,7 +124,7 @@ components:
       example: 5MaqJH
       explode: true
       in: query
-      name: shortUrl
+      name: url
       required: true
       schema:
         type: string

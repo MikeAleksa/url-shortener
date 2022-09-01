@@ -18,6 +18,11 @@ func main() {
 	// Middleware
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
+	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+		AllowOrigins: []string{"*"},
+		AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept},
+		// AllowMethods: []string{echo.GET, echo.HEAD, echo.OPTIONS, echo.POST},
+	}))
 
 	// sleep for a while to allow the database to be created
 	time.Sleep(time.Second * 5)
